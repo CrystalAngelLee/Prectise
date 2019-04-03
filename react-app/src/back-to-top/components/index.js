@@ -25,17 +25,32 @@ export default class BackTop extends Component {
     }
   }
 
-  BackTop = () => {
-    console.log('AAA', document.getElementsByClassName('am-list')[0].offsetTop)
+  backTop = (rate, callback) => {
+    const { target } = this.props;
+    let doc = target || document.getElementById('onScroll').firstChild;
+    let scrollTop = doc.scrollTop;
+    let top = () => {
+      scrollTop = scrollTop + (0 - scrollTop) / (rate * 1 || 3);
+      // 临界判断，终止动画
+      if (scrollTop < 1) {
+          scrollTop = 0;
+          return;
+      }
+      doc.scrollTop = scrollTop;
+      // 动画!
+      requestAnimationFrame(top);    
+    };
+    top();
+    if (callback) callback();
   }
 
   render() {
-    const { prefixCls } = this.props;
+    const { prefixCls, rate, clickfun } = this.props;
     const { visible } = this.state;
     return (
       <div id='onScroll' style={{height: '100%'}} onScroll={this.onScroll}>
         {this.props.children}
-        <div className={prefixCls} style={{ display: visible ? 'block' : 'none' }} onClick={this.BackTop}>
+        <div className={prefixCls} style={{ display: visible ? 'block' : 'none' }} onClick={() => this.backTop(rate, clickfun)}>
           <span style={{color: 'red'}}>BackTop</span>
         </div>
       </div>

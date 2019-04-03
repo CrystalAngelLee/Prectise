@@ -14,8 +14,12 @@ export default class BackTopDemo extends Component {
         <div className={prefixCls}>
           <div className='fixed-box'>我是不滚动的部分</div>
           <div className='scroll-box'>
-          <BackTop visibilityHeight='100'>
-            <div className='scroll-list'>
+          <BackTop 
+            visibilityHeight='100'
+            rate='8'
+            target={this.refs.scrollList}
+          >
+            <div className='scroll-list' ref='scrollList'>
               <div className='am-list'>
                 <div className='artical'>
                   细看来，不是杨花，点点是离人泪。断送一生憔悴，只消几个黄昏。——赵令峙《清平乐》；<br/>
