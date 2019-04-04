@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import '../style/index.css';
 
 export default class BackTop extends Component {
@@ -10,6 +11,10 @@ export default class BackTop extends Component {
     this.state = {
       visible: false,
     }
+  }
+
+  componentWillUnmount() {
+    this.setState({visible: false})
   }
 
   onScroll = (e) => {
@@ -27,7 +32,7 @@ export default class BackTop extends Component {
 
   backTop = (rate, callback) => {
     const { target } = this.props;
-    let doc = target || document.getElementById('onScroll').firstChild;
+    let doc = document.getElementsByClassName(target)[0] || document.getElementById('onScroll').firstChild;
     let scrollTop = doc.scrollTop;
     let top = () => {
       scrollTop = scrollTop + (0 - scrollTop) / (rate * 1 || 3);
@@ -45,13 +50,14 @@ export default class BackTop extends Component {
   }
 
   render() {
-    const { prefixCls, rate, clickfun } = this.props;
+    const { prefixCls, rate, clickfun, wrpCls, icon } = this.props;
     const { visible } = this.state;
+    let wrapCls = classnames(`${prefixCls}`, {[`${wrpCls}`] : wrpCls})
     return (
-      <div id='onScroll' style={{height: '100%'}} onScroll={this.onScroll}>
+      <div className={wrapCls} id='onScroll' onScroll={this.onScroll}>
         {this.props.children}
-        <div className={prefixCls} style={{ display: visible ? 'block' : 'none' }} onClick={() => this.backTop(rate, clickfun)}>
-          <span style={{color: 'red'}}>BackTop</span>
+        <div className={`${prefixCls}-title`} style={{ display: visible ? 'block' : 'none' }} onClick={() => this.backTop(rate, clickfun)}>
+          {icon || <span style={{color: 'red'}}>BackTop</span>}
         </div>
       </div>
     )
