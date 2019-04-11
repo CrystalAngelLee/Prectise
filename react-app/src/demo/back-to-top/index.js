@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import BackTop from '../../back-to-top';
-import './style/index.css';
+import BackTop from '../../components/back-to-top';
+import './index.css';
 
 export default class BackTopDemo extends Component {
   static defaultProps = {

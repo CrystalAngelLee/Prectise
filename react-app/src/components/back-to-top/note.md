@@ -6,3 +6,8 @@
 - target: 滚动的Dom元素的className   默认为BackTop下的第一个子元素，理论上必须
 - wrpCls: 自定义className
 - icon: 自动定义返回顶部图标
+
+## 新需求
+- 图标可拖拽
+- 可以自定义图标大小
+- 无图标模式下自定义回到顶部事件
