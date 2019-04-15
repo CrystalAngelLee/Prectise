@@ -46,17 +46,21 @@ export default class BackTop extends Component {
       requestAnimationFrame(top);    
     };
     top();
-    if (callback) callback();
+    if (typeof callback === 'function') callback();
   }
 
   render() {
     const { prefixCls, rate, clickfun, wrpCls, icon } = this.props;
     const { visible } = this.state;
-    let wrapCls = classnames(`${prefixCls}`, {[`${wrpCls}`] : wrpCls})
+    let wrapCls = classnames(`${prefixCls}`, {[`${wrpCls}`] : wrpCls});
     return (
       <div className={wrapCls} id='onScroll' onScroll={this.onScroll}>
         {this.props.children}
-        <div className={`${prefixCls}-title`} style={{ display: visible ? 'block' : 'none' }} onClick={() => this.backTop(rate, clickfun)}>
+        <div 
+          className={`${prefixCls}-title`} 
+          style={{ display: visible ? 'block' : 'none' }} 
+          onClick={() => this.backTop(rate, clickfun)}
+        >
           {icon || <span style={{color: 'red'}}>BackTop</span>}
         </div>
       </div>

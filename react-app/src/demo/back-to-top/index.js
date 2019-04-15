@@ -17,9 +17,12 @@ export default class BackTopDemo extends Component {
           <BackTop 
             visibilityHeight='100'
             rate='8'
-            target={this.refs.scrollList}
+            target='scroll-list'
+            clickfun={() => console.log('回调函数')}
+            wrpCls='demo-back'
+            icon={<div className='backUp'><img src={require('./up.png')} alt='' /></div>}
           >
-            <div className='scroll-list' ref='scrollList'>
+            <div className='scroll-list'>
               <div className='am-list'>
                 <div className='artical'>
                   细看来，不是杨花，点点是离人泪。断送一生憔悴，只消几个黄昏。——赵令峙《清平乐》；<br/>
