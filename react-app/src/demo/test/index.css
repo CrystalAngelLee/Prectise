@@ -1,0 +1,15 @@
+.cr-test {
+  height: 100%;
+  padding: 0 20px;
+}
+.title {
+  background: pink;
+  color: #fff;
+  padding: 5px 10px;
+}
+.cr-test-example {
+  height: 70%
+}
+.cr-test-description {
+  height: 10%
+}
