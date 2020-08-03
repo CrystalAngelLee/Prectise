@@ -1,0 +1,8 @@
+.container {
+  width: 300px;
+  overflow: hidden;
+}
+.scrollContainer {
+  width: 100%;
+  overflow: auto;
+}

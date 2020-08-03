@@ -1,0 +1,16 @@
+.scrollbar > .outerbar {
+  height: 7px;
+  width: 100%;
+}
+.scrollbar-inner {
+  height: 7px;
+  border-radius: 7px;
+  background-color: rgba(0, 0, 0, .5);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .5s ease 0s;
+}
+.is-show {
+  opacity: 1;
+  transition: opacity 0s ease 0s;
+}
