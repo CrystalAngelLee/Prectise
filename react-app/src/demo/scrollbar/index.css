@@ -1,8 +1,16 @@
-.container {
+.scrollContainer {
   width: 300px;
   overflow: hidden;
 }
 .scrollContainer {
   width: 100%;
   overflow: auto;
+}
+
+.iframe-container {
+  height: 600px;
+}
+
+.iframe-container iframe {
+  border: 0;
 }
