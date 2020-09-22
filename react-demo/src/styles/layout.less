@@ -1,0 +1,32 @@
+@main: crBest;
+
+.ant-layout {
+  height: 100%;
+  &-header {
+    background: #fff;
+  }
+}
+
+.crBest {
+  &-layout {
+    &-header {
+      font-size: larger;
+      font-weight: bold;
+    }
+    &-container {
+      position: relative;
+      margin: 10px 0;
+      height: calc(100% - 20px);
+      &-sider {
+        height: 100%;
+        margin-right: 10px;
+        .ant-menu {
+          height: 100%;
+        }
+      }
+      &-contant {
+        background: #fff;
+      }
+    }
+  }
+}

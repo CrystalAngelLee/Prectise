@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 
-const image = require("../../statics/大图_.jpg");
+const image = require("./大图_.jpg");
 
 const Content = `
   <div id="wea_rich_text_default_font" style="font-size:12px;">
