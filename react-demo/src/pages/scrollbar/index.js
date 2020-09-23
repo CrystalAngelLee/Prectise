@@ -10,11 +10,9 @@ export default class ScrollBarTest extends Component {
   render() {
     return (
       <div className="scrolltest">
-        <h3>横向滚动条</h3>
-
         <div className="scrolltest-container">
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Tab 1" key="1">
+          <Tabs defaultActiveKey="2">
+            <TabPane tab="DIV" key="1">
               <div className="div-container">
                 <div className="scrollContainer" id="scrollContainer">
                   <div className="article" style={{ width: 400 }}>
@@ -25,9 +23,11 @@ export default class ScrollBarTest extends Component {
                 <ScrollBar targetDom={"#scrollContainer"} />
               </div>
             </TabPane>
-            <TabPane tab="Tab 2" key="2">
+            <TabPane tab="Iframe" key="2">
               <div className="iframe-container">
-                <Iframe />
+                <ScrollBar type="iframe" targetDom={"body"}>
+                  <Iframe />
+                </ScrollBar>
               </div>
             </TabPane>
           </Tabs>

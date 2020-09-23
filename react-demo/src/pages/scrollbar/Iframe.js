@@ -25,7 +25,6 @@ export default class IframeComp extends PureComponent {
     const frame = this.iframe.current;
     const win = frame.contentWindow;
     const doc = win.document;
-    console.log(doc);
     if (typeof value === "string") {
       doc.write('<html><head><style>table{border-collapse: collapse;}</style></head><body style="overflow-y:hidden"></body></html>');
       doc.body.innerHTML = value;

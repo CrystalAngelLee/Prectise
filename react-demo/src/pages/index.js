@@ -9,7 +9,7 @@ const requestModule = {
 };
 
 function Home() {
-  const [selectKey, setSelectKey] = useState("avatar");
+  const [selectKey, setSelectKey] = useState("scrollBar");
   const Comp = requestModule[selectKey.toUpperCase()] || null;
 
   const onSelect = useCallback((key, data) => {
