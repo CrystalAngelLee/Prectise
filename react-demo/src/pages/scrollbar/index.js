@@ -7,6 +7,22 @@ import Iframe from "./Iframe";
 const { TabPane } = Tabs;
 
 export default class ScrollBarTest extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scrollLazy: true,
+      scrollWidth: 0,
+    };
+  }
+
+  onSetScrollWidth = data => {
+    this.setState({ scrollWidth: data });
+  };
+
+  onLoad = data => {
+    this.setState({ scrollLazy: data.loading });
+  };
+
   render() {
     return (
       <div className="scrolltest">
@@ -25,9 +41,9 @@ export default class ScrollBarTest extends Component {
             </TabPane>
             <TabPane tab="Iframe" key="2">
               <div className="iframe-container">
-                <ScrollBar type="iframe" targetDom={"body"}>
-                  <Iframe />
-                </ScrollBar>
+                <ScrollBar.Iframe targetDom="body" scrollWidth={this.state.scrollWidth}>
+                  <Iframe onSetScrollWidth={this.onSetScrollWidth} onLoad={this.onLoad} />
+                </ScrollBar.Iframe>
               </div>
             </TabPane>
           </Tabs>

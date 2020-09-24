@@ -1,17 +1,8 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 import classnames from "classnames";
-import "../style/index.less";
 
 const prefixCls = "scrollbar";
-const Types = ["common", "iframe"];
-const randomId = Math.random().toString().slice(3, 9);
 export default class ScrollBar extends Component {
-  static defaultProps = {
-    type: "common",
-  };
-
   constructor(props) {
     super(props);
 
@@ -26,23 +17,11 @@ export default class ScrollBar extends Component {
       distanceY: 0, // 记录每次点击滚动条浮标时的内容容器此刻的scrollTop
     };
     this._targetElem = null;
-    this.id = `scroll-${randomId}`;
   }
 
   componentDidMount() {
-    const { targetDom, type } = this.props;
-    let currentDoc = document;
-    if (!Types.includes(type)) {
-      console.error("your type is unsupported");
-      return;
-    }
-    if (type === "iframe") {
-      const iframe = document.querySelector(`#${this.id} > iframe`);
-      const win = iframe.contentWindow;
-      const doc = win.document;
-      currentDoc = doc;
-    }
-    this._targetElem = currentDoc.querySelector(targetDom);
+    const { targetDom } = this.props;
+    this._targetElem = document.querySelector(targetDom);
     if (this._targetElem) {
       this.onInitalScrollbar();
     }
@@ -145,25 +124,12 @@ export default class ScrollBar extends Component {
   };
 
   render() {
-    const { className, children } = this.props;
+    const { className } = this.props;
     const { isShow } = this.state;
-    const scrollBar = (
+    return (
       <div className={classnames(prefixCls, isShow ? "outerbar" : "", className ? className : "")}>
         <div className={classnames(`${prefixCls}-inner`, isShow ? "is-show" : "", className ? `${className}-inner` : "")}></div>
       </div>
     );
-    if (children) {
-      return (
-        <div className={`${prefixCls}-container`} id={this.id}>
-          {children}
-          {scrollBar}
-        </div>
-      );
-    }
-    return scrollBar;
   }
 }
-
-ScrollBar.propTypes = {
-  type: PropTypes.string,
-};

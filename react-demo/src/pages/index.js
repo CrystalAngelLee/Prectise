@@ -13,7 +13,6 @@ function Home() {
   const Comp = requestModule[selectKey.toUpperCase()] || null;
 
   const onSelect = useCallback((key, data) => {
-    console.log(key, data);
     setSelectKey(key);
   }, []);
 
