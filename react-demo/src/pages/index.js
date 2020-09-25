@@ -2,10 +2,12 @@ import React, { useState, useCallback } from "react";
 import Layout from "../components/Layout";
 import Avatar from "./avatar";
 import ScrollBar from "./scrollbar";
+import BackToTop from "./back-to-top";
 
 const requestModule = {
   AVATAR: Avatar,
   SCROLLBAR: ScrollBar,
+  BACKTOTOP: BackToTop,
 };
 
 function Home() {

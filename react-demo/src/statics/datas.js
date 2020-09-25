@@ -5,7 +5,7 @@ module.exports = {
       name: "Avatar",
     },
     {
-      key: "toTop",
+      key: "backToTop",
       name: "返回顶部",
     },
     {
