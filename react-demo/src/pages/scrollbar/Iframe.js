@@ -1,41 +1,5 @@
 import React, { PureComponent } from "react";
 
-const image = require("./大图_.jpg");
-
-const Content = `
-  <div id="wea_rich_text_default_font" style="font-size:12px;">
-    <p>
-      &nbsp;
-      <img alt="" src="${image}" class="formImgPlay" />
-      &nbsp;
-    </p>
-  </div>`;
-
-const TableContent = `
-<div id="wea_rich_text_default_font" style="font-size:9px;"><table border="1" cellpadding="1" style="height:500px;width:1200px;">
-	<caption>哈哈哈</caption>
-	<thead>
-		<tr>
-			<th scope="col">&nbsp;</th>
-			<th scope="col">&nbsp;</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td style="padding: 1px;">&nbsp;</td>
-			<td style="padding: 1px;">&nbsp;</td>
-		</tr>
-		<tr>
-			<td style="padding: 1px;">&nbsp;</td>
-			<td style="padding: 1px;">&nbsp;</td>
-		</tr>
-	</tbody>
-</table>
-
-<p>222</p>
-</div>
-`;
-
 export default class IframeComp extends PureComponent {
   constructor(props) {
     super(props);
@@ -47,7 +11,8 @@ export default class IframeComp extends PureComponent {
   }
 
   componentDidMount() {
-    this.setContent(Content);
+    const { content } = this.props;
+    this.setContent(content);
   }
 
   setContent = value => {
@@ -55,7 +20,17 @@ export default class IframeComp extends PureComponent {
     const win = frame.contentWindow;
     const doc = win.document;
     if (typeof value === "string") {
-      doc.write('<html><head><style>table{border-collapse: collapse;}</style></head><body style="overflow-y:hidden"></body></html>');
+      doc.write(`
+        <html>
+          <head>
+            <style>
+              table {border-collapse: collapse;}
+              body::-webkit-scrollbar {width: 0; height: 0;}
+            </style>
+          </head>
+          <body style="overflow-y:hidden"></body>
+        </html>
+      `);
       doc.body.innerHTML = value;
     }
 

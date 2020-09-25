@@ -10,7 +10,9 @@ function CustomLayout({ children, selectKey, onSelect }) {
   return (
     <Layout>
       <Header className={`${prefixCls}-header`}>
-        <Container renderer={<div className="title" />}>HELLO I AM Cystal Angel</Container>
+        <Container renderer={<div className="title" />}>
+          HELLO I AM Cystal Angel <span className="name">精灵小不点</span>
+        </Container>
       </Header>
       <Content>
         <Container renderer={<Layout className={`${prefixCls}-container`} />}>

@@ -1,0 +1,28 @@
+.div-container {
+  width: 300px;
+  overflow: hidden;
+}
+.scrollContainer {
+  width: 100%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.iframe-container {
+  height: 600px;
+  width: 500px;
+  iframe {
+    border: 0;
+    html,
+    body {
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+    }
+  }
+}

@@ -3,10 +3,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 
 const prefixCls = "scroll-bar";
-
 class ScrollBar extends PureComponent {
   static propTypes = {
-    visible: PropTypes.bool.isRequired,
     clientWidth: PropTypes.number.isRequired,
     scrollWidth: PropTypes.number.isRequired,
   };
@@ -19,70 +17,133 @@ class ScrollBar extends PureComponent {
       clientWidth: props.clientWidth,
       scrollWidth: props.scrollWidth,
       slider: 0,
+      distanceX: 0,
+      scrollLeft: 0,
     };
-    this.scrollDocument = props.scrollDocument || document;
-    this.sliderX = React.createRef();
-    this.sliderXbar = React.createRef();
+    this.randomId = Math.random().toString().slice(3, 13);
+    this.startX = 0;
+    this.startDistance = 0;
+    this.onMounceDown = false;
+    this.outerSlider = null; // record document outer slider
+    this.innnerSlider = null; // record document inner slider
+  }
+
+  componentDidMount() {
+    this.calculateSilder();
+    this.setElemEvent();
+    this.props.bindElemtListener();
   }
 
   componentWillReceiveProps(nextProps) {
     this.setVisible(nextProps);
+    nextProps.bindElemtListener();
   }
 
-  setVisible = (props, bool) => {
+  setElemEvent = () => {
+    this.outerSlider = document.getElementById(`outer_${this.randomId}`);
+    this.innnerSlider = document.getElementById(`inner_${this.randomId}`);
+    if (this.outerSlider && this.innnerSlider) {
+      this.outerSlider.addEventListener("mouseover", this.onOuterMouseOver);
+    } else {
+      setTimeout(() => this.setElemEvent(), 500);
+    }
+  };
+
+  setVisible = props => {
     const { clientWidth, scrollWidth } = props || this.props;
     let visible = clientWidth < scrollWidth;
 
-    this.setState({ visible: bool || visible, clientWidth, scrollWidth });
+    this.setState({ visible: visible, clientWidth, scrollWidth }, () => {
+      this.calculateSilder();
+    });
   };
 
-  initailSilder = () => {
-    this.props.targetElement.addEventListener("scroll", this.handleScroll);
-    this.sliderX.current.addEventListener("mouseover", this.hoverSrollXBar);
-  };
-
-  handleScroll = el => {
-    console.log("handleScroll");
-    // const e = el;
-    // const target = e.target || e.srcElement;
-    // // 主要是为了区分是垂直滚动还是横向滚动
-    // const scrollAreaValue = this._targetElem.scrollWidth;
-    // const clientAreaValue = this._targetElem.clientWidth;
-    // const scrollValue = this._targetElem.scrollLeft;
-    // this.calcSize(); // 每次滚动的时候重新计算滚动条尺寸，以免容器内容发生变化后，滚动条尺寸不匹配变化后的容器宽高
-    // const distance = (scrollValue * clientAreaValue) / scrollAreaValue; // 根据公式二计算滚动条浮标应该移动距离
-    // this.scrollXBar.style.transform = `translateX(${distance}px)`;
-    // this.setState({ scrollLeft: target.scrollLeft });
-  };
-
-  hoverSrollXBar = () => {
-    console.log("hoverSrollXBar");
-    // const sA = this._targetElem.scrollWidth;
-    // const cA = this._targetElem.clientWidth;
-    // // 达到展示滚动条条件时
-    // if (sA > cA) {
-    //   //     this.scrollXBar.style[style] = cA * cA / sA + 'px'; // 设置滚动条长度
-    //   //     // this.scrollXBar.className += ' is-show';
-    //   this.scrollXBar.addEventListener("mousedown", this.clickStart);
-    //   this.scrollX.addEventListener("mouseout", this.hoverOutSroll);
-    // }
-  };
-
+  // calculate innerBar width
   calculateSilder = () => {
     const { clientWidth, scrollWidth } = this.state;
-    let slider = (clientWidth * clientWidth) / scrollWidth;
-    this.setState({ slider });
+
+    let slider = (clientWidth * clientWidth) / scrollWidth || 0;
+    if (slider !== this.state.slider) {
+      this.setState({ slider });
+    }
+  };
+
+  // calculate slider remove distance
+  getDistance = distance => {
+    const { targetElement } = this.props;
+    const { clientWidth, scrollWidth } = this.state;
+
+    const distanceX = (targetElement.scrollLeft * clientWidth) / scrollWidth;
+    this.setState({ distanceX, scrollLeft: distance });
+  };
+
+  // record the target document scroll distance
+  onElementScroll = targetElem => {
+    let distanceX = targetElem.scrollLeft;
+    this.calculateSilder();
+    this.getDistance(distanceX);
+  };
+
+  onOuterMouseOver = () => {
+    const { clientWidth, scrollWidth } = this.state;
+    if (clientWidth < scrollWidth) {
+      this.innnerSlider && this.innnerSlider.addEventListener("mousedown", this.onInnerMouseDown);
+      this.outerSlider && this.outerSlider.addEventListener("mouseout", this.onOuterMouseOut);
+    }
+  };
+
+  onOuterMouseOut = () => {
+    this.innnerSlider.removeEventListener("mousedown", this.onInnerMouseDown);
+    this.innnerSlider.removeEventListener("mouseout", this.onOuterMouseOut);
+  };
+
+  onInnerMouseDown = e => {
+    const { targetElement } = this.props;
+    // record the current pageX, for calculate later
+    this.startX = e.pageX;
+    // record the container scrollLeft, for calculate later
+    this.startDistance = targetElement.scrollLeft;
+    this.startX.removeEventListener && this.startX.removeEventListener("mouseout", this.onOuterMouseOut);
+    document.addEventListener("mousemove", this.onDocMouseMove);
+    document.addEventListener("mouseup", this.onDocMouseUp);
+  };
+
+  // press silder and scroll it
+  onDocMouseMove = e => {
+    const { targetElement } = this.props;
+    const { clientWidth, scrollWidth } = this.state;
+    let change = (scrollWidth * (e.pageX - this.startX)) / clientWidth;
+    change += this.startDistance;
+    if (change < 0) {
+      targetElement.scrollLeft = 0;
+      return;
+    }
+    if (change + clientWidth >= scrollWidth) {
+      targetElement.scrollLeft = scrollWidth - clientWidth;
+      return;
+    }
+    targetElement.scrollLeft = change;
+  };
+
+  onDocMouseUp = _ => {
+    this.outerSlider.removeEventListener("mouseout", this.onOuterMouseOut);
+    document.removeEventListener("mousemove", this.onDocMouseMove);
+    document.removeEventListener("mouseup", this.onDocMouseUp);
   };
 
   render() {
-    const { visible } = this.state;
+    const { visible, slider, distanceX } = this.state;
     const { clientWidth, scrollWidth } = this.props;
     if (clientWidth >= scrollWidth) return null;
+    const innerStyles = {
+      width: slider,
+      transform: `translateX(${distanceX}px)`,
+    };
 
     return (
-      <div className={classnames({ [`${prefixCls}-slider`]: visible })}>
-        <div className={`${prefixCls}-slider-outer`} ref={this.sliderX}>
-          <div className={`${prefixCls}-slider-inner`} ref={this.sliderXbar} />
+      <div className={classnames({ [`${prefixCls}-slider`]: visible })} style={{ width: clientWidth }}>
+        <div className={`${prefixCls}-slider-outer`} id={`outer_${this.randomId}`}>
+          <div className={`${prefixCls}-slider-inner`} id={`inner_${this.randomId}`} style={innerStyles} />
         </div>
       </div>
     );
