@@ -98,7 +98,7 @@ class ScrollBar extends PureComponent {
   };
 
   onInnerMouseDown = e => {
-    const { targetElement } = this.props;
+    const { targetElement, bindMouseUpElmentListener } = this.props;
     // record the current pageX, for calculate later
     this.startX = e.pageX;
     // record the container scrollLeft, for calculate later
@@ -106,11 +106,13 @@ class ScrollBar extends PureComponent {
     this.startX.removeEventListener && this.startX.removeEventListener("mouseout", this.onOuterMouseOut);
     document.addEventListener("mousemove", this.onDocMouseMove);
     document.addEventListener("mouseup", this.onDocMouseUp);
+    bindMouseUpElmentListener && bindMouseUpElmentListener();
   };
 
   // press silder and scroll it
   onDocMouseMove = e => {
     const { targetElement } = this.props;
+    console.log('window.event.button', window.event.button)
     const { clientWidth, scrollWidth } = this.state;
     let change = (scrollWidth * (e.pageX - this.startX)) / clientWidth;
     change += this.startDistance;
@@ -126,9 +128,12 @@ class ScrollBar extends PureComponent {
   };
 
   onDocMouseUp = _ => {
+    console.log('onDocMouseUp')
+    const { unBindMouseUpElmentListener } = this.props;
     this.outerSlider.removeEventListener("mouseout", this.onOuterMouseOut);
     document.removeEventListener("mousemove", this.onDocMouseMove);
     document.removeEventListener("mouseup", this.onDocMouseUp);
+    unBindMouseUpElmentListener && unBindMouseUpElmentListener()
   };
 
   render() {

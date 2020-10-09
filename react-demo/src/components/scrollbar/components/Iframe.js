@@ -30,14 +30,14 @@ class IframeScroll extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.targetDom === this.props.targetDom && nextProps.scrollWidth !== this.props.scrollWidth) {
-      this.calculateScrollWidth(nextProps.scrollWidth);
+      this.getTargetDom(nextProps);
     }
   }
 
   // search targetDom in Irame
-  getTargetDom = () => {
-    const { targetDom, clientWidth, scrollWidth } = this.props;
-    const iframe = document.querySelector(`#${this.randomId} > iframe`);
+  getTargetDom = props => {
+    const { targetDom, clientWidth, scrollWidth } = props || this.props;
+    const iframe = document.querySelector(`#${this.randomId} iframe`);
     const win = iframe.contentWindow;
     const doc = win.document;
     this.window = win;
@@ -63,10 +63,20 @@ class IframeScroll extends PureComponent {
     this.document.addEventListener("scroll", this.onElementScroll);
   };
 
+  bindMouseUpElmentListener = () => {
+    this.document.addEventListener("mouseup", this.onElementMouseUp);
+  };
+
+  unBindMouseUpElmentListener = () => this.document.removeEventListener("mouseup", this.onElementMouseUp);
+
   onElementScroll = e => {
     const target = e.target || e.srcElement;
     const scrollingElement = target.scrollingElement;
     this.scrollBar.current.onElementScroll(scrollingElement);
+  };
+
+  onElementMouseUp = _ => {
+    this.scrollBar.current.onDocMouseUp();
   };
 
   render() {
@@ -75,7 +85,7 @@ class IframeScroll extends PureComponent {
     return (
       <div className={prefixCls} id={this.randomId}>
         {children}
-        <ScrollBar ref={this.scrollBar} clientWidth={clientWidth} scrollWidth={scrollWidth} scrollDocument={this.document} targetElement={this.targetElement} bindElemtListener={this.bindElemtListener} />
+        <ScrollBar ref={this.scrollBar} clientWidth={clientWidth} scrollWidth={scrollWidth} scrollDocument={this.document} targetElement={this.targetElement} bindElemtListener={this.bindElemtListener} bindMouseUpElmentListener={this.bindMouseUpElmentListener} unBindMouseUpElmentListener={this.unBindMouseUpElmentListener} />
       </div>
     );
   }

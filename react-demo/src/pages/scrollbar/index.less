@@ -12,9 +12,9 @@
   }
 }
 
-.iframe-container {
-  height: 600px;
-  width: 500px;
+.iframe-container,
+.iframe-container-images {
+  width: 100%;
   iframe {
     border: 0;
     html,
@@ -24,5 +24,12 @@
         height: 0;
       }
     }
+  }
+}
+
+.iframe-container-images {
+  .scroll-bar-slider {
+    position: fixed;
+    bottom: 5px;
   }
 }

@@ -6,12 +6,14 @@ import Iframe from "./Iframe";
 
 const { TabPane } = Tabs;
 const image = require("./大图_.jpg");
+const image1 = require("./timg.jpg");
 const Content = `
   <div id="wea_rich_text_default_font" style="font-size:12px;">
     <p>
       &nbsp;
-      <img alt="" src="${image}" class="formImgPlay" />
+      <img alt="" src="${image}" />
       &nbsp;
+      <img alt="" src="${image1}" />
     </p>
   </div>`;
 
@@ -40,6 +42,7 @@ const TableContent = `
 </div>
 `;
 
+const func = Content;
 export default class ScrollBarTest extends Component {
   constructor(props) {
     super(props);
@@ -71,7 +74,7 @@ export default class ScrollBarTest extends Component {
     return (
       <div className="scrolltest">
         <div className="scrolltest-container">
-          <Tabs defaultActiveKey="2">
+          <Tabs defaultActiveKey="3">
             <TabPane tab="DIV" key="1">
               <div className="div-container">
                 <div className="scrollContainer" id="scrollContainer">
@@ -91,7 +94,7 @@ export default class ScrollBarTest extends Component {
               </div>
             </TabPane>
             <TabPane tab="IframeContent" key="3">
-              <div className="iframe-container">
+              <div className="iframe-container-images">
                 <ScrollBar.Iframe key="img" targetDom="body" scrollWidth={this.state.scrollWidth}>
                   <Iframe onSetScrollWidth={this.onSetScrollWidth} onLoad={this.onLoad} content={Content} />
                 </ScrollBar.Iframe>
