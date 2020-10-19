@@ -12,5 +12,9 @@ module.exports = {
       key: "scrollBar",
       name: "模拟滚动条",
     },
+    {
+      key: "test",
+      name: "草稿页面",
+    },
   ],
 };

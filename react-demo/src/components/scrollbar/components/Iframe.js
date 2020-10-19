@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import ScrollBar from "./ScrollBar";
+import NativeScrollBar from "./NativeScrollBar";
 import PropTypes from "prop-types";
 
 const prefixCls = "scroll-bar-iframe";
@@ -21,7 +22,9 @@ class IframeScroll extends PureComponent {
     this.document = document;
     this.targetElement = null;
     this.scrollBar = React.createRef();
+    this.nativeScrollBar = React.createRef();
     this.randomId = `scrollIrame_${Math.random().toString().slice(3, 9)}`;
+    window.addEventListener('resize', this.handleResize)
   }
 
   componentDidMount() {
@@ -31,6 +34,18 @@ class IframeScroll extends PureComponent {
   componentWillReceiveProps(nextProps) {
     if (nextProps.targetDom === this.props.targetDom && nextProps.scrollWidth !== this.props.scrollWidth) {
       this.getTargetDom(nextProps);
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize)
+  }
+  
+
+  handleResize = () => {
+    if (this.targetElement) {
+      this.calculateClientWidth();
+      this.calculateScrollWidth();
     }
   }
 
@@ -80,12 +95,12 @@ class IframeScroll extends PureComponent {
   };
 
   render() {
-    const { children } = this.props;
+    const { children, native = false } = this.props;
     const { clientWidth, scrollWidth } = this.state;
     return (
       <div className={prefixCls} id={this.randomId}>
         {children}
-        <ScrollBar ref={this.scrollBar} clientWidth={clientWidth} scrollWidth={scrollWidth} scrollDocument={this.document} targetElement={this.targetElement} bindElemtListener={this.bindElemtListener} bindMouseUpElmentListener={this.bindMouseUpElmentListener} unBindMouseUpElmentListener={this.unBindMouseUpElmentListener} />
+        {native && clientWidth < scrollWidth ? <NativeScrollBar ref={this.nativeScrollBar} clientWidth={clientWidth} scrollWidth={scrollWidth} targetElement={this.targetElement} /> : clientWidth < scrollWidth ? <ScrollBar ref={this.scrollBar} clientWidth={clientWidth} scrollWidth={scrollWidth} scrollDocument={this.document} targetElement={this.targetElement} bindElemtListener={this.bindElemtListener} bindMouseUpElmentListener={this.bindMouseUpElmentListener} unBindMouseUpElmentListener={this.unBindMouseUpElmentListener} /> : null}
       </div>
     );
   }

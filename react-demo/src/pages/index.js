@@ -3,11 +3,13 @@ import Layout from "../components/Layout";
 import Avatar from "./avatar";
 import ScrollBar from "./scrollbar";
 import BackToTop from "./back-to-top";
+import Test from "./customtest";
 
 const requestModule = {
   AVATAR: Avatar,
   SCROLLBAR: ScrollBar,
   BACKTOTOP: BackToTop,
+  TEST: Test,
 };
 
 function Home() {

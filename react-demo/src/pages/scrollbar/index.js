@@ -70,11 +70,12 @@ export default class ScrollBarTest extends Component {
     this.setState({ tableScrollLazy: data.loading });
   };
 
+
   render() {
     return (
       <div className="scrolltest">
         <div className="scrolltest-container">
-          <Tabs defaultActiveKey="3">
+          <Tabs defaultActiveKey="2">
             <TabPane tab="DIV" key="1">
               <div className="div-container">
                 <div className="scrollContainer" id="scrollContainer">
@@ -88,7 +89,7 @@ export default class ScrollBarTest extends Component {
             </TabPane>
             <TabPane tab="IframeTable" key="2">
               <div className="iframe-container">
-                <ScrollBar.Iframe key="table" targetDom="body" scrollWidth={this.state.tableScrollWidth}>
+                <ScrollBar.Iframe key="table" targetDom="body" scrollWidth={this.state.tableScrollWidth} native>
                   <Iframe onSetScrollWidth={this.onSetIframeTableScrollWidth} onLoad={this.onTableLoad} content={TableContent} />
                 </ScrollBar.Iframe>
               </div>

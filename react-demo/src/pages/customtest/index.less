@@ -1,0 +1,19 @@
+.test-outter {
+  height: 12px;
+  width: 100px;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 12px;
+    background-color: #fff;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #eee;
+    cursor: pointer;
+  }
+}
+.test-inner {
+  height: 12px;
+  width: 300px;
+}
